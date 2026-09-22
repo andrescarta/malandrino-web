@@ -1,0 +1,227 @@
+.demo-body {
+  margin: 0;
+}
+
+.demo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: var(--color-black);
+  color: var(--color-warm-white);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-caption);
+}
+
+.demo-nav a {
+  color: var(--color-warm-white);
+  text-decoration: none;
+}
+
+.demo-nav a:hover {
+  text-decoration: underline;
+}
+
+.demo-nav-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.demo-section {
+  padding: 4rem 1.5rem;
+}
+
+.demo-section--flush {
+  padding: 0;
+}
+
+.demo-section--flush .demo-intro {
+  padding: 4rem 1.5rem 2rem;
+}
+
+.demo-intro {
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.demo-kicker {
+  display: block;
+  font-family: var(--font-caption);
+  font-size: 0.9rem;
+  color: var(--color-red);
+  margin-bottom: 0.5rem;
+}
+
+.demo-heading {
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin: 0 0 0.75rem;
+  color: var(--color-black);
+}
+
+.demo-text {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-black);
+  margin: 0;
+}
+
+/* --- Patron 1: scroll horizontal con snap --- */
+.hscroll {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hscroll-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0 1.5rem;
+}
+
+.hscroll-slide {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(80vw, 640px);
+  height: 70vh;
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.hscroll-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hscroll-slide figcaption {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  color: var(--color-warm-white);
+  font-family: var(--font-caption);
+  font-size: 0.9rem;
+  background-color: rgba(7, 7, 7, 0.6);
+  padding: 0.35rem 0.75rem;
+}
+
+/* --- Patron 2: revelado progresivo --- */
+.reveal-stack {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(48px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.reveal-item p {
+  font-family: var(--font-caption);
+  color: var(--color-black);
+  margin-top: 0.75rem;
+}
+
+/* --- Patron 3: secciones cinematograficas full-bleed --- */
+.cinematic {
+  position: relative;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 3rem;
+}
+
+.cinematic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 7, 7, 0.7), rgba(7, 7, 7, 0) 55%);
+}
+
+.cinematic-overlay {
+  position: relative;
+  z-index: 1;
+  color: var(--color-warm-white);
+}
+
+.cinematic-caption {
+  display: block;
+  font-family: var(--font-caption);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.cinematic-title {
+  font-family: var(--font-title);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* --- Patron 4: slider horizontal full-bleed con fade in --- */
+.hscroll-full {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  height: 100vh;
+}
+
+.hscroll-full-track {
+  display: flex;
+  height: 100%;
+  width: max-content;
+}
+
+.hscroll-full-slide {
+  position: relative;
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100%;
+  scroll-snap-align: center;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 3rem;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.hscroll-full-slide.is-visible {
+  opacity: 1;
+}
+
+.hscroll-full-slide::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(7, 7, 7, 0.7), rgba(7, 7, 7, 0) 55%);
+}
