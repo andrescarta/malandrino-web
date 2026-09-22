@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Archivos marcados para borrar (Claude no puede eliminarlos directo)
+_to_delete/
