@@ -1,36 +1,12 @@
-// Importa automaticamente todas las fotos de cada carpeta en src/assets/photos/.
-// Al agregar una foto nueva en una de esas carpetas, aparece sola aca sin tocar codigo.
-const modules = import.meta.glob('/src/assets/photos/*/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp}', {
-  eager: true,
-  import: 'default',
-})
+import { modules, categoriesMap } from './photos.js'
+import { renderNav, initNav } from './nav.js'
 
-const categoriesMap = {}
-for (const path in modules) {
-  const match = path.match(/\/photos\/([^/]+)\//)
-  if (!match) continue
-  const category = match[1]
-  if (!categoriesMap[category]) categoriesMap[category] = []
-  categoriesMap[category].push(modules[path])
-}
-Object.values(categoriesMap).forEach((files) => files.sort())
-
-// Orden y titulo de cada seccion. Si una carpeta no tiene fotos todavia, se omite sola.
-const sectionOrder = [
-  { key: 'lugar', title: 'EL LUGAR' },
-  { key: 'pizzas', title: 'PIZZAS' },
-  { key: 'schiacciatas', title: 'SCHIACCIATAS' },
-  { key: 'calzones', title: 'CALZONES' },
-  { key: 'picadas', title: 'PICADAS' },
-  { key: 'papas-fritas', title: 'PAPAS FRITAS' },
-  { key: 'postres', title: 'POSTRES' },
-  { key: 'bebidas', title: 'BEBIDAS' },
-]
-
-// --- Foto para el resumen (about): al azar entre las fotos cenitales de pizza ---
-const pizzaCenitalPhotos = categoriesMap['pizza-cenital'] || []
-const aboutPhoto = pizzaCenitalPhotos.length
-  ? pizzaCenitalPhotos[Math.floor(Math.random() * pizzaCenitalPhotos.length)]
+// --- Foto para el resumen (about): al azar entre todas las categorias, menos pizza-cenital ---
+const aboutPhotoPool = Object.entries(categoriesMap)
+  .filter(([category]) => category !== 'pizza-cenital')
+  .flatMap(([, files]) => files)
+const aboutPhoto = aboutPhotoPool.length
+  ? aboutPhotoPool[Math.floor(Math.random() * aboutPhotoPool.length)]
   : ''
 
 // --- Marquee de palabras: config y helpers ---
@@ -70,56 +46,8 @@ const marqueeRowsHtml = marqueeRows
 
 const marqueePhoto = allPhotos.length ? allPhotos[Math.floor(Math.random() * allPhotos.length)] : ''
 
-const gallerySections = sectionOrder
-  .filter((section) => categoriesMap[section.key]?.length)
-  .map(
-    (section) => `
-    <section class="photo-section" data-category="${section.key}">
-      <div class="hscroll-full" tabindex="0">
-        <div class="hscroll-full-track">
-          ${categoriesMap[section.key]
-            .map(
-              (src) => `
-            <div class="hscroll-full-slide" style="background-image:url('${src}')">
-              <div class="cinematic-overlay">
-                <h3 class="cinematic-title">${section.title}</h3>
-              </div>
-            </div>
-          `
-            )
-            .join('')}
-        </div>
-      </div>
-    </section>
-  `
-  )
-  .join('')
-
-const reservaMessage = encodeURIComponent('Hola, quiero hacer una reserva en Malandrino.')
-const reservaHref = `https://wa.me/542646273034?text=${reservaMessage}`
-
 document.querySelector('#app').innerHTML = `
-  <nav class="navbar">
-    <a href="/" class="navbar-logo-link" aria-label="Ir al inicio">
-      <img src="/malandrino-favicon-blanco.svg" alt="Malandrino" class="navbar-logo" />
-      <span class="navbar-logo-text">Inicio</span>
-    </a>
-
-    <a href="${reservaHref}" target="_blank" rel="noopener" class="nav-link">Reserva</a>
-    <a href="#pedir" class="nav-cta">Pedí ya</a>
-
-    <div class="nav-dropdown">
-      <button class="dropdown-toggle" type="button" aria-expanded="false">
-        Menú
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#ubicacion">Ubicación</a></li>
-        <li><a href="#carta">Carta</a></li>
-        <li><a href="#local">Local</a></li>
-        <li><a href="#platos">Platos</a></li>
-      </ul>
-    </div>
-  </nav>
+  ${renderNav()}
   <div class="hero">
     <img src="/malandrino-3d-negro.svg" alt="Malandrino" class="hero-logo" />
   </div>
@@ -127,10 +55,9 @@ document.querySelector('#app').innerHTML = `
     <div class="about-text">
       <span class="about-kicker">Malandrino</span>
       <h2 class="about-heading">Simple.<br />Auténtico.<br />Nuestro.</h2>
-      <p class="about-copy">Pizzería, schiacciateria y bar cultural en pleno San Juan capital. Masa de fermentación larga con biga, horneada a la piedra. Sin vueltas, sin relleno: buena comida, buena música y gente real compartiendo la mesa.</p>
+      <p class="about-copy">Pizzería, schiacciateria y bar cultural en pleno San Juan capital. Masa de fermentación larga con biga y horneado a la piedra. Además de pizzas y schiacciatas, tenés tragos clásicos, buena música en vivo y un ambiente pensado para el encuentro.</p>
     </div>
     <div class="about-photo">
-      <div class="about-photo-frame" aria-hidden="true"></div>
       <img src="${aboutPhoto}" alt="Pizza de Malandrino" class="about-photo-img" />
     </div>
   </section>
@@ -140,10 +67,11 @@ document.querySelector('#app').innerHTML = `
     </div>
     <img src="${marqueePhoto}" alt="" class="word-marquee-image" />
   </section>
-  <section class="map-section">
-    <img src="/map.svg" alt="Mapa de ubicación de Malandrino" class="map-image" />
+  <section class="map-section" id="ubicacion">
+    <a href="https://maps.app.goo.gl/jLTDVqsv6c8ZxT6M9" target="_blank" rel="noopener" class="map-link" aria-label="Ver Malandrino en Google Maps">
+      <img src="/map.svg" alt="Mapa de ubicación de Malandrino" class="map-image" />
+    </a>
   </section>
-  ${gallerySections}
   <footer class="site-footer">
     <div class="footer-top">
       <div class="footer-brand">
@@ -172,59 +100,41 @@ document.querySelector('#app').innerHTML = `
   </footer>
 `
 
-// --- Dropdown del nav ---
-const dropdown = document.querySelector('.nav-dropdown')
-const toggle = document.querySelector('.dropdown-toggle')
+initNav()
 
-toggle.addEventListener('click', (event) => {
-  event.stopPropagation()
-  const isOpen = dropdown.classList.toggle('open')
-  toggle.setAttribute('aria-expanded', String(isOpen))
-})
+// --- Inclinacion 3D segun posicion del mouse (reutilizable) ---
+function setupTilt(containerEl, targetEl, maxTilt = 16, baseTransform = '') {
+  if (!containerEl || !targetEl) return
+  // baseTransform: para elementos que ya tienen un transform propio (ej. centrado con
+  // translate(-50%,-50%) o una rotacion fija) y no lo pueden perder al aplicar el tilt.
+  const prefix = baseTransform ? `${baseTransform} ` : ''
 
-document.addEventListener('click', () => {
-  dropdown.classList.remove('open')
-  toggle.setAttribute('aria-expanded', 'false')
-})
-
-// --- Logo del hero: inclinacion 3D segun posicion del mouse ---
-const heroEl = document.querySelector('.hero')
-const heroLogoEl = document.querySelector('.hero-logo')
-
-if (heroEl && heroLogoEl) {
-  const MAX_TILT = 16 // grados maximos de inclinacion
-
-  heroEl.addEventListener('mousemove', (event) => {
-    const rect = heroEl.getBoundingClientRect()
+  containerEl.addEventListener('mousemove', (event) => {
+    const rect = containerEl.getBoundingClientRect()
     const relX = (event.clientX - rect.left) / rect.width - 0.5 // -0.5 a 0.5
     const relY = (event.clientY - rect.top) / rect.height - 0.5
 
-    const rotateY = relX * MAX_TILT * 2
-    const rotateX = -relY * MAX_TILT * 2
+    const rotateY = relX * maxTilt * 2
+    const rotateX = -relY * maxTilt * 2
 
-    heroLogoEl.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+    targetEl.style.transform = `${prefix}perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
   })
 
-  heroEl.addEventListener('mouseleave', () => {
-    heroLogoEl.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)'
+  containerEl.addEventListener('mouseleave', () => {
+    targetEl.style.transform = `${prefix}perspective(900px) rotateX(0deg) rotateY(0deg)`
   })
 }
 
-// --- Sliders full-bleed por categoria (patron 4: fade in, no vuelve a blanco) ---
-document.querySelectorAll('.hscroll-full').forEach((container) => {
-  const slides = container.querySelectorAll('.hscroll-full-slide')
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-        }
-      })
-    },
-    { root: container, threshold: 0.6 }
-  )
-  slides.forEach((slide) => observer.observe(slide))
-})
+// Logo del hero
+setupTilt(document.querySelector('.hero'), document.querySelector('.hero-logo'))
+
+// Imagen del marquee (mismo movimiento que el logo del hero; mantiene su centrado y su inclinacion fija de 3deg como base)
+setupTilt(
+  document.querySelector('.word-marquee'),
+  document.querySelector('.word-marquee-image'),
+  16,
+  'translate(-50%, -50%) rotate(3deg)'
+)
 
 // --- Marquee: ajusta la duracion de cada fila segun su ancho real, para que todas
 // se desplacen a la misma velocidad en px/seg (no en segundos por vuelta) ---
