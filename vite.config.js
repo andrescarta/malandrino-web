@@ -8,6 +8,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         carta: resolve(__dirname, 'carta.html'),
         eventos: resolve(__dirname, 'eventos.html'),
+        local: resolve(__dirname, 'local.html'),
       },
     },
   },

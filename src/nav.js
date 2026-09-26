@@ -2,7 +2,7 @@
 const reservaMessage = encodeURIComponent('Hola, quiero hacer una reserva en Malandrino.')
 const reservaHref = `https://wa.me/542646273034?text=${reservaMessage}`
 
-export function renderNav({ ubicacionHref = '/#ubicacion', cartaHref = '/carta.html', eventosHref = '/eventos.html' } = {}) {
+export function renderNav({ ubicacionHref = '/#ubicacion', cartaHref = '/carta.html', eventosHref = '/eventos.html', localHref = '/local.html' } = {}) {
   return `
   <nav class="navbar">
     <a href="/" class="navbar-logo-link" aria-label="Ir al inicio">
@@ -20,6 +20,7 @@ export function renderNav({ ubicacionHref = '/#ubicacion', cartaHref = '/carta.h
         <li><a href="${ubicacionHref}">Ubicación</a></li>
         <li><a href="${cartaHref}">Carta</a></li>
         <li><a href="${eventosHref}">Eventos</a></li>
+        <li><a href="${localHref}">Local</a></li>
       </ul>
     </div>
   </nav>
