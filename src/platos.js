@@ -1,8 +1,8 @@
 import { categoriesMap, sectionOrder } from './photos.js'
 import { renderNav, initNav } from './nav.js'
 
-// Categorias de la carta: todas menos "lugar" (esa es solo para la home).
-const cartaSections = sectionOrder.filter(
+// Categorias de la galeria de platos: todas menos "lugar" (esa es solo para la home).
+const platosSections = sectionOrder.filter(
   ({ key, title }) => key !== 'lugar' && categoriesMap[key] && categoriesMap[key].length
 )
 
@@ -10,7 +10,7 @@ function buildCarouselSlides(photos, categoryTitle) {
   return photos
     .map(
       (src, i) => `
-    <div class="carta-carousel-slide" style="background-image:url('${src}')">
+    <div class="platos-carousel-slide" style="background-image:url('${src}')">
       <div class="cinematic-overlay">
         <span class="cinematic-caption">${categoryTitle} · ${String(i + 1).padStart(2, '0')}/${String(photos.length).padStart(2, '0')}</span>
       </div>
@@ -19,21 +19,21 @@ function buildCarouselSlides(photos, categoryTitle) {
     .join('')
 }
 
-const cartaCardsHtml = cartaSections
+const platosCardsHtml = platosSections
   .map(({ key, title }) => {
     const photos = categoriesMap[key]
     return `
-    <article class="carta-card" data-category="${key}">
-      <div class="carta-card-header">
-        <h2 class="carta-card-title">${title}</h2>
+    <article class="platos-card" data-category="${key}">
+      <div class="platos-card-header">
+        <h2 class="platos-card-title">${title}</h2>
       </div>
-      <div class="carta-carousel">
+      <div class="platos-carousel">
         ${buildCarouselSlides(photos, title)}
       </div>
       ${
         photos.length > 1
-          ? `<button type="button" class="carta-carousel-arrow carta-carousel-arrow--prev" aria-label="Anterior">&larr;</button>
-      <button type="button" class="carta-carousel-arrow carta-carousel-arrow--next" aria-label="Siguiente">&rarr;</button>`
+          ? `<button type="button" class="platos-carousel-arrow platos-carousel-arrow--prev" aria-label="Anterior">&larr;</button>
+      <button type="button" class="platos-carousel-arrow platos-carousel-arrow--next" aria-label="Siguiente">&rarr;</button>`
           : ''
       }
     </article>`
@@ -42,12 +42,12 @@ const cartaCardsHtml = cartaSections
 
 document.querySelector('#app').innerHTML = `
   ${renderNav()}
-  <main class="carta-page">
-    <header class="carta-header">
-      <h1 class="carta-heading">La Carta</h1>
+  <main class="platos-page">
+    <header class="platos-header">
+      <h1 class="platos-heading">Nuestros Platos</h1>
     </header>
-    <div class="carta-grid">
-      ${cartaCardsHtml}
+    <div class="platos-grid">
+      ${platosCardsHtml}
     </div>
   </main>
 `
@@ -63,13 +63,13 @@ const slideObserver = new IntersectionObserver(
   },
   { threshold: 0.4 }
 )
-document.querySelectorAll('.carta-carousel-slide').forEach((slide) => slideObserver.observe(slide))
+document.querySelectorAll('.platos-carousel-slide').forEach((slide) => slideObserver.observe(slide))
 
 // --- Flechas de navegacion del carrusel ---
-document.querySelectorAll('.carta-card').forEach((card) => {
-  const carousel = card.querySelector('.carta-carousel')
-  const prevBtn = card.querySelector('.carta-carousel-arrow--prev')
-  const nextBtn = card.querySelector('.carta-carousel-arrow--next')
+document.querySelectorAll('.platos-card').forEach((card) => {
+  const carousel = card.querySelector('.platos-carousel')
+  const prevBtn = card.querySelector('.platos-carousel-arrow--prev')
+  const nextBtn = card.querySelector('.platos-carousel-arrow--next')
   if (!carousel) return
 
   const scrollByOneSlide = (dir) => {

@@ -6,7 +6,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        carta: resolve(__dirname, 'carta.html'),
+        menu: resolve(__dirname, 'menu.html'),
+        platos: resolve(__dirname, 'platos.html'),
         eventos: resolve(__dirname, 'eventos.html'),
         local: resolve(__dirname, 'local.html'),
       },

@@ -1,17 +1,17 @@
-/* ---------- Pagina de la Carta ---------- */
-.carta-page {
+/* ---------- Pagina de Platos (galeria de fotos por categoria) ---------- */
+.platos-page {
   width: 100%;
   min-height: 100vh;
   padding-top: 72px;
   background-color: var(--color-warm-white);
 }
 
-.carta-header {
+.platos-header {
   padding: 2.5rem 1.5rem 1.5rem;
   text-align: center;
 }
 
-.carta-heading {
+.platos-heading {
   font-family: var(--font-title);
   font-weight: 900;
   font-size: clamp(2.5rem, 8vw, 4.5rem);
@@ -20,14 +20,14 @@
   letter-spacing: 0.02em;
 }
 
-.carta-grid {
+.platos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 1.5rem;
   padding: 0 1.5rem 3rem;
 }
 
-.carta-card {
+.platos-card {
   position: relative;
   aspect-ratio: 4 / 5;
   border-radius: 12px;
@@ -35,7 +35,7 @@
   background-color: var(--color-black);
 }
 
-.carta-card-header {
+.platos-card-header {
   position: absolute;
   top: 0;
   left: 0;
@@ -46,7 +46,7 @@
   pointer-events: none;
 }
 
-.carta-card-title {
+.platos-card-title {
   font-family: var(--font-title);
   font-weight: 900;
   font-size: clamp(1.5rem, 3vw, 2rem);
@@ -55,7 +55,7 @@
   letter-spacing: 0.02em;
 }
 
-.carta-carousel {
+.platos-carousel {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -66,11 +66,11 @@
   scrollbar-width: none;
 }
 
-.carta-carousel::-webkit-scrollbar {
+.platos-carousel::-webkit-scrollbar {
   display: none;
 }
 
-.carta-carousel-slide {
+.platos-carousel-slide {
   position: relative;
   flex: 0 0 100%;
   width: 100%;
@@ -85,18 +85,18 @@
   transition: opacity 0.9s ease;
 }
 
-.carta-carousel-slide.is-visible {
+.platos-carousel-slide.is-visible {
   opacity: 1;
 }
 
-.carta-carousel-slide::before {
+.platos-carousel-slide::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(7, 7, 7, 0.65), rgba(7, 7, 7, 0) 55%);
 }
 
-.carta-carousel-arrow {
+.platos-carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -116,20 +116,20 @@
   transition: background-color 0.2s ease;
 }
 
-.carta-carousel-arrow:hover {
+.platos-carousel-arrow:hover {
   background-color: rgba(7, 7, 7, 0.75);
 }
 
-.carta-carousel-arrow--prev {
+.platos-carousel-arrow--prev {
   left: 0.75rem;
 }
 
-.carta-carousel-arrow--next {
+.platos-carousel-arrow--next {
   right: 0.75rem;
 }
 
 @media (max-width: 480px) {
-  .carta-grid {
+  .platos-grid {
     grid-template-columns: 1fr;
   }
 }

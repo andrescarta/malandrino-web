@@ -1,6 +1,6 @@
 // Importa automaticamente todas las fotos de cada carpeta en src/assets/photos/.
 // Al agregar una foto nueva en una de esas carpetas, aparece sola aca sin tocar codigo.
-// Compartido entre main.js (home) y carta.js (pagina de la carta).
+// Compartido entre main.js (home), menu.js (pagina del menu) y platos.js (galeria de platos).
 export const modules = import.meta.glob('/src/assets/photos/*/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp}', {
   eager: true,
   import: 'default',
