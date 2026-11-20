@@ -46,19 +46,74 @@ const marqueeRowsHtml = marqueeRows
 
 const marqueePhoto = allPhotos.length ? allPhotos[Math.floor(Math.random() * allPhotos.length)] : ''
 
+// --- Instagram: embeds oficiales (oEmbed) de publicaciones elegidas a mano ---
+// "Expres": sin servicios de terceros ni cuentas nuevas. Para sumar/cambiar posts,
+// agregar/quitar URLs aca (formato https://www.instagram.com/p/CODIGO/).
+const instagramPosts = [
+  'https://www.instagram.com/p/DfNvOkSg5Z0/',
+  'https://www.instagram.com/p/DeqQJUZRF_f/',
+  'https://www.instagram.com/p/Dd5LRkVgPX4/',
+  'https://www.instagram.com/p/DaiXbGRgBiu/',
+  'https://www.instagram.com/p/DZfihmVgOYY/',
+]
+
+const instagramGridHtml = instagramPosts
+  .map(
+    (url) => `
+    <div class="social-embed">
+      <blockquote class="instagram-media" data-instgrm-permalink="${url}" data-instgrm-version="14"></blockquote>
+    </div>
+  `
+  )
+  .join('')
+
+// --- Google: tarjeta armada a mano con datos reales (consultados manualmente, no en vivo) ---
+// Fuente: ficha de Google de Malandrino. Actualizar a mano cada tanto.
+const googleReviews = {
+  updatedLabel: 'Noviembre 2026',
+  rating: 4.5,
+  total: 172,
+  breakdown: [
+    { stars: 5, count: 118 },
+    { stars: 4, count: 34 },
+    { stars: 3, count: 11 },
+    { stars: 2, count: 6 },
+    { stars: 1, count: 3 },
+  ],
+  summary:
+    'En Google, lo que más se repite es el sabor de las pizzas y schiacciatas —con buena cantidad de muzzarella y variedad en la carta—, las papas fritas grandes y crocantes, y la buena onda del personal. El lugar también suma puntos por el ambiente y los shows en vivo. Algunas reseñas marcan que la comida es pareja pero no siempre al tope, que el servicio podría ser más ágil en los momentos de más gente, y que en invierno el salón se siente frío.',
+}
+
+const googleBarsHtml = googleReviews.breakdown
+  .map(({ stars, count }) => {
+    const pct = ((count / googleReviews.total) * 100).toFixed(1)
+    return `
+      <div class="reviews-bar-row">
+        <span class="reviews-bar-label">${stars}</span>
+        <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width:${pct}%"></div></div>
+        <span class="reviews-bar-count">${count}</span>
+      </div>
+    `
+  })
+  .join('')
+
+const starsPct = ((googleReviews.rating / 5) * 100).toFixed(0)
+
 document.querySelector('#app').innerHTML = `
   ${renderNav()}
   <div class="hero">
     <img src="/malandrino-3d-negro.svg" alt="Malandrino" class="hero-logo" />
   </div>
   <section class="about-section">
-    <div class="about-text">
-      <span class="about-kicker">Malandrino</span>
-      <h2 class="about-heading">Simple.<br />Auténtico.<br />Nuestro.</h2>
-      <p class="about-copy">Pizzería, schiacciateria y bar cultural en pleno San Juan capital. Masa de fermentación larga con biga y horneado a la piedra. Además de pizzas y schiacciatas, tenés tragos clásicos, buena música en vivo y un ambiente pensado para el encuentro.</p>
-    </div>
-    <div class="about-photo">
-      <img src="${aboutPhoto}" alt="Pizza de Malandrino" class="about-photo-img" />
+    <div class="about-inner">
+      <div class="about-text">
+        <span class="about-kicker">Malandrino</span>
+        <h2 class="about-heading">Simple.<br />Auténtico.<br />Nuestro.</h2>
+        <p class="about-copy">Pizzería, schiacciateria y bar cultural en pleno San Juan capital. Masa de fermentación larga con biga y horneado a la piedra. Además de pizzas y schiacciatas, tenés tragos clásicos, buena música en vivo y un ambiente pensado para el encuentro.</p>
+      </div>
+      <div class="about-photo">
+        <img src="${aboutPhoto}" alt="Pizza de Malandrino" class="about-photo-img" />
+      </div>
     </div>
   </section>
   <section class="word-marquee" style="font-family:${MARQUEE_FONT.family};font-weight:${MARQUEE_FONT.weight}">
@@ -72,6 +127,44 @@ document.querySelector('#app').innerHTML = `
       <img src="/map.svg" alt="Mapa de ubicación de Malandrino" class="map-image" />
     </a>
   </section>
+
+  <section class="social-section" id="instagram">
+    <div class="social-header">
+      <span class="social-kicker">Malandrino</span>
+      <h2 class="social-heading">Seguínos en Instagram</h2>
+    </div>
+    <div class="social-grid">
+      ${instagramGridHtml}
+    </div>
+    <a href="https://instagram.com/malandrino.sj" target="_blank" rel="noopener" class="social-cta">Ver más en @malandrino.sj</a>
+  </section>
+
+  <section class="reviews-section" id="opiniones">
+    <div class="reviews-header">
+      <span class="reviews-kicker">Malandrino</span>
+      <h2 class="reviews-heading">Lo que dicen en Google</h2>
+    </div>
+    <div class="reviews-card">
+      <div class="reviews-score">
+        <span class="reviews-score-number">${googleReviews.rating.toString().replace('.', ',')}</span>
+        <div class="reviews-stars" style="--pct:${starsPct}%">
+          <div class="reviews-stars-bg">★★★★★</div>
+          <div class="reviews-stars-fg">★★★★★</div>
+        </div>
+        <span class="reviews-score-count">${googleReviews.total} reseñas en Google</span>
+      </div>
+      <div class="reviews-bars">
+        ${googleBarsHtml}
+      </div>
+    </div>
+    <div class="reviews-summary">
+      <h3 class="reviews-summary-title">Lo que más se repite</h3>
+      <p class="reviews-summary-copy">${googleReviews.summary}</p>
+      <p class="reviews-summary-note">Resumen hecho a mano a partir de las reseñas públicas de Google (no son citas textuales). Actualizado ${googleReviews.updatedLabel}.</p>
+    </div>
+    <a href="https://maps.app.goo.gl/jLTDVqsv6c8ZxT6M9" target="_blank" rel="noopener" class="reviews-cta">Ver todas las reseñas en Google</a>
+  </section>
+
   <footer class="site-footer">
     <div class="footer-top">
       <div class="footer-brand">
@@ -109,6 +202,17 @@ document.querySelector('#app').innerHTML = `
 `
 
 initNav()
+
+// Instagram carga su script de embeds de forma async; si todavia no esta listo
+// reintentamos un par de veces en vez de asumir que ya existe window.instgrm.
+function processInstagramEmbeds(retries = 10) {
+  if (window.instgrm && window.instgrm.Embeds) {
+    window.instgrm.Embeds.process()
+  } else if (retries > 0) {
+    setTimeout(() => processInstagramEmbeds(retries - 1), 300)
+  }
+}
+processInstagramEmbeds()
 
 // --- Inclinacion 3D segun posicion del mouse (reutilizable) ---
 function setupTilt(containerEl, targetEl, maxTilt = 16, baseTransform = '') {

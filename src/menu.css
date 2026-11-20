@@ -31,88 +31,62 @@
   letter-spacing: 0.02em;
 }
 
-.menu-content {
-  max-width: 46rem;
+/* --- Carta visual (SVG), tira horizontal con scroll-snap --- */
+.menu-pages-scroll {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem 4rem;
+  padding: 0 1.5rem 1.5rem;
 }
 
-.menu-placeholder {
-  border: 1px solid rgba(7, 7, 7, 0.15);
+.menu-carta-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.menu-page-slide {
+  flex: 0 0 auto;
+  width: min(78vw, 460px);
+  scroll-snap-align: center;
+}
+
+.menu-page-slide svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1080 / 1920;
   border-radius: 12px;
-  padding: 2.5rem 1.5rem;
-  text-align: center;
+  background-color: var(--color-warm-white);
+  box-shadow: 0 16px 36px rgba(7, 7, 7, 0.18);
 }
 
-.menu-placeholder p {
+.menu-loading {
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 1rem;
   color: var(--color-black);
-  opacity: 0.75;
-  margin: 0;
+  opacity: 0.7;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  width: 100%;
 }
 
-/* --- Categorias y platos --- */
-.menu-category {
-  margin-bottom: 2.5rem;
-}
-
-.menu-category-title {
-  font-family: var(--font-title);
-  font-weight: 900;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  color: var(--color-red);
-  margin: 0 0 1.25rem;
-  letter-spacing: 0.02em;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-black);
-}
-
-.menu-item-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid rgba(7, 7, 7, 0.1);
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.menu-item-name {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 1.1rem;
-  color: var(--color-black);
-}
-
-.menu-item-desc {
+.menu-scroll-hint {
   font-family: var(--font-caption);
   font-weight: 300;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-black);
-  opacity: 0.65;
-}
-
-.menu-item-price {
-  font-family: var(--font-caption);
-  font-weight: 400;
-  font-size: 1.05rem;
-  color: var(--color-black);
-  white-space: nowrap;
+  opacity: 0.5;
+  text-align: center;
+  padding: 0 1.5rem 4rem;
+  margin: 0;
 }

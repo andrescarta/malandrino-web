@@ -1,4 +1,4 @@
-/* ---------- Pagina de El Lugar (placeholder hasta que armemos la galeria) ---------- */
+/* ---------- Pagina de El Lugar (galeria rapida con las fotos del local) ---------- */
 .local-page {
   width: 100%;
   min-height: 100vh;
@@ -31,10 +31,10 @@
   letter-spacing: 0.02em;
 }
 
-.local-placeholder-section {
-  max-width: 700px;
+.local-gallery-section {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 1.5rem 4rem;
+  padding: 0 1.5rem 4rem;
 }
 
 .local-placeholder {

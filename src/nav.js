@@ -1,30 +1,44 @@
-// Nav + modal de "Pedi ya": compartido entre todas las paginas del sitio.
+// Nav + modales ("Pedi ya" y la Carta): compartido entre todas las paginas del sitio.
+import { fetchCartaPages } from './carta.js'
+
 const reservaMessage = encodeURIComponent('Hola, quiero hacer una reserva en Malandrino.')
 const reservaHref = `https://wa.me/542646273034?text=${reservaMessage}`
 
 export function renderNav({ ubicacionHref = '/#ubicacion', menuHref = '/menu.html', platosHref = '/platos.html', eventosHref = '/eventos.html', localHref = '/local.html' } = {}) {
   return `
   <nav class="navbar">
-    <a href="/" class="navbar-logo-link" aria-label="Ir al inicio">
-      <img src="/malandrino-favicon-blanco.svg" alt="Malandrino" class="navbar-logo" />
-    </a>
+    <div class="navbar-inner">
+      <a href="/" class="navbar-logo-link" aria-label="Ir al inicio">
+        <img src="/malandrino-favicon-blanco.svg" alt="Malandrino" class="navbar-logo" />
+      </a>
 
-    <a href="${reservaHref}" target="_blank" rel="noopener" class="nav-link">Reserva</a>
-    <button type="button" class="nav-cta" id="pedir-ya-btn">Pedí ya</button>
+      <a href="${reservaHref}" target="_blank" rel="noopener" class="nav-link">Reserva</a>
+      <button type="button" class="nav-cta" id="pedir-ya-btn">Pedí ya</button>
 
-    <div class="nav-dropdown">
-      <button class="dropdown-toggle" type="button" aria-expanded="false">
-        Menú
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="${ubicacionHref}">Ubicación</a></li>
-        <li><a href="${menuHref}">Menú</a></li>
-        <li><a href="${platosHref}">Platos</a></li>
-        <li><a href="${eventosHref}">Eventos</a></li>
-        <li><a href="${localHref}">Local</a></li>
-      </ul>
+      <div class="nav-dropdown">
+        <button class="dropdown-toggle" type="button" aria-expanded="false">
+          Menú
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="${ubicacionHref}">Ubicación</a></li>
+          <li><a href="${menuHref}" data-open-carta>Menú</a></li>
+          <li><a href="${platosHref}">Platos</a></li>
+          <li><a href="${eventosHref}">Eventos</a></li>
+          <li><a href="${localHref}">Local</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
+  <div class="carta-modal" id="carta-modal">
+    <div class="carta-modal-backdrop" data-close-carta></div>
+    <div class="carta-modal-panel" role="dialog" aria-modal="true" aria-label="Carta de Malandrino">
+      <button type="button" class="carta-modal-close" data-close-carta aria-label="Cerrar">&times;</button>
+      <span class="carta-modal-count" id="carta-modal-count"></span>
+      <div class="carta-modal-pages" id="carta-modal-pages">
+        <p class="carta-modal-loading">Cargando la carta…</p>
+      </div>
+    </div>
+  </div>
   <div class="pedir-modal" id="pedir-modal">
     <div class="pedir-modal-backdrop" data-close-modal></div>
     <div class="pedir-modal-panel" role="dialog" aria-modal="true" aria-label="Elegí cómo pedir">
@@ -74,6 +88,70 @@ export function initNav() {
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') pedirModal.classList.remove('is-open')
+    })
+  }
+
+  // --- Modal de la Carta (SVG, pagina por pagina, a pantalla completa) ---
+  const cartaModal = document.querySelector('#carta-modal')
+  const cartaPagesEl = document.querySelector('#carta-modal-pages')
+  const cartaCountEl = document.querySelector('#carta-modal-count')
+  const cartaLink = document.querySelector('[data-open-carta]')
+  let cartaLoaded = false
+
+  function updateCartaCount() {
+    if (!cartaCountEl || !cartaPagesEl) return
+    const slides = cartaPagesEl.querySelectorAll('.carta-modal-page')
+    if (!slides.length) {
+      cartaCountEl.textContent = ''
+      return
+    }
+    const index = Math.round(cartaPagesEl.scrollLeft / cartaPagesEl.clientWidth)
+    cartaCountEl.textContent = `${Math.min(index + 1, slides.length)} / ${slides.length}`
+  }
+
+  async function openCartaModal() {
+    if (!cartaModal) return
+    cartaModal.classList.add('is-open')
+    document.body.style.overflow = 'hidden'
+
+    if (!cartaLoaded) {
+      cartaLoaded = true
+      try {
+        const pages = await fetchCartaPages()
+        cartaPagesEl.innerHTML = pages
+          .map((pageSvg, i) => `<div class="carta-modal-page" role="img" aria-label="Página ${i + 1} de la carta">${pageSvg}</div>`)
+          .join('')
+        cartaPagesEl.addEventListener('scroll', updateCartaCount, { passive: true })
+        updateCartaCount()
+      } catch (err) {
+        console.error(err)
+        cartaPagesEl.innerHTML = '<p class="carta-modal-loading">No se pudo cargar la carta. Probá de nuevo más tarde.</p>'
+        cartaLoaded = false
+      }
+    }
+  }
+
+  function closeCartaModal() {
+    if (!cartaModal) return
+    cartaModal.classList.remove('is-open')
+    document.body.style.overflow = ''
+  }
+
+  if (cartaLink && cartaModal) {
+    cartaLink.addEventListener('click', (event) => {
+      // Click simple: abre el popup. Con modificadores (abrir en pestaña nueva, etc.)
+      // dejamos que el link funcione normal y vaya a /menu.html.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button === 1) return
+      event.preventDefault()
+      openCartaModal()
+    })
+
+    cartaModal.querySelectorAll('[data-close-carta]').forEach((el) => {
+      el.addEventListener('click', closeCartaModal)
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeCartaModal()
     })
   }
 

@@ -1,4 +1,4 @@
-/* ---------- Pagina de Platos (galeria de fotos por categoria) ---------- */
+/* ---------- Pagina de Platos (galerias rapidas por categoria) ---------- */
 .platos-page {
   width: 100%;
   min-height: 100vh;
@@ -22,110 +22,17 @@
 
 .platos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 1.5rem 3rem;
 }
 
-.platos-card {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: var(--color-black);
-}
-
-.platos-card-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 2;
-  padding: 1.25rem 1.25rem 2.5rem;
-  background: linear-gradient(to bottom, rgba(7, 7, 7, 0.75), rgba(7, 7, 7, 0));
-  pointer-events: none;
-}
-
-.platos-card-title {
-  font-family: var(--font-title);
-  font-weight: 900;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  color: var(--color-warm-white);
-  margin: 0;
-  letter-spacing: 0.02em;
-}
-
-.platos-carousel {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  height: 100%;
-  scrollbar-width: none;
-}
-
-.platos-carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.platos-carousel-slide {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  scroll-snap-align: center;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
-  padding: 1.25rem;
-  opacity: 0;
-  transition: opacity 0.9s ease;
-}
-
-.platos-carousel-slide.is-visible {
-  opacity: 1;
-}
-
-.platos-carousel-slide::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(7, 7, 7, 0.65), rgba(7, 7, 7, 0) 55%);
-}
-
-.platos-carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 3;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: none;
-  border-radius: 50%;
-  background-color: rgba(7, 7, 7, 0.45);
-  color: var(--color-warm-white);
-  font-size: 1.25rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.platos-carousel-arrow:hover {
-  background-color: rgba(7, 7, 7, 0.75);
-}
-
-.platos-carousel-arrow--prev {
-  left: 0.75rem;
-}
-
-.platos-carousel-arrow--next {
-  right: 0.75rem;
+@media (max-width: 720px) {
+  .platos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
