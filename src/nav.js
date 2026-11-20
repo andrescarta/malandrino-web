@@ -52,13 +52,13 @@ export function renderNav({ ubicacionHref = '/#ubicacion', menuHref = '/menu.htm
           </div>
           <span class="pedir-option-arrow" aria-hidden="true">&rarr;</span>
         </a>
-        <div class="pedir-option is-disabled">
+        <a href="https://www.ubereats.com/ar/store/malandrino-san-juan/ElNMkSHwW62RpWe3A4Hnow" target="_blank" rel="noopener" class="pedir-option">
           <div class="pedir-option-info">
             <span class="pedir-option-name">Uber Eats</span>
             <span class="pedir-option-tag">Delivery más barato</span>
           </div>
-          <span class="pedir-option-badge">Próximamente</span>
-        </div>
+          <span class="pedir-option-arrow" aria-hidden="true">&rarr;</span>
+        </a>
         <a href="https://www.pedidosya.com.ar/restaurantes/san-juan/malandrino-cdf44ad5-af2c-41cc-86c2-506996ba8395-menu" target="_blank" rel="noopener" class="pedir-option">
           <div class="pedir-option-info">
             <span class="pedir-option-name">PedidosYa</span>
