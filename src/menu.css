@@ -64,7 +64,7 @@
   aspect-ratio: 1080 / 1920;
   border-radius: 12px;
   background-color: var(--color-warm-white);
-  box-shadow: 0 16px 36px rgba(7, 7, 7, 0.18);
+  box-shadow: 0 16px 36px rgba(16, 24, 21, 0.18);
 }
 
 .menu-loading {

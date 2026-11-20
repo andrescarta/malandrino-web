@@ -37,7 +37,7 @@
   align-items: baseline;
   gap: 0.5rem;
   padding: 1.25rem;
-  background: linear-gradient(to top, rgba(7, 7, 7, 0.65), rgba(7, 7, 7, 0) 70%);
+  background: linear-gradient(to top, rgba(16, 24, 21, 0.65), rgba(16, 24, 21, 0) 70%);
 }
 
 .fast-gallery-title {
