@@ -116,6 +116,10 @@ document.querySelector('#app').innerHTML = `
       </div>
     </div>
   </section>
+  <section class="dron-section" aria-label="Malandrino desde arriba">
+    <img src="/lugar/banda-dron.jpg" alt="Malandrino visto desde arriba, en la esquina de Urquiza Sur 991" class="dron-img" loading="lazy" />
+    <a href="/local.html" class="dron-chip">Conocé el lugar &rarr;</a>
+  </section>
   <section class="word-marquee" style="font-family:${MARQUEE_FONT.family};font-weight:${MARQUEE_FONT.weight}">
     <div class="word-marquee-rows">
       ${marqueeRowsHtml}
@@ -126,6 +130,20 @@ document.querySelector('#app').innerHTML = `
     <a href="https://maps.app.goo.gl/jLTDVqsv6c8ZxT6M9" target="_blank" rel="noopener" class="map-link" aria-label="Ver Malandrino en Google Maps">
       <img src="/map.svg" alt="Mapa de ubicación de Malandrino" class="map-image" />
     </a>
+  </section>
+
+  <section class="brindis-section">
+    <div class="brindis-inner">
+      <div class="brindis-photo">
+        <img src="/eventos/fotos/07.jpg" alt="Dos manos brindando con tragos en Malandrino" loading="lazy" />
+      </div>
+      <div class="brindis-text">
+        <span class="brindis-kicker">Malandrino</span>
+        <h2 class="brindis-heading">Vení a brindar.</h2>
+        <p class="brindis-copy">Tragos clásicos, vermut y música en vivo, de miércoles a domingo desde las 20.</p>
+        <a href="/eventos.html" class="brindis-cta">Ver eventos</a>
+      </div>
+    </div>
   </section>
 
   <section class="social-section" id="instagram">
