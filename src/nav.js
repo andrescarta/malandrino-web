@@ -2,14 +2,14 @@
 import { fetchCartaPages } from './carta.js'
 
 const reservaMessage = encodeURIComponent('Hola, quiero hacer una reserva en Malandrino.')
-const reservaHref = `https://wa.me/542646273034?text=${reservaMessage}`
+export const reservaHref = `https://wa.me/542646273034?text=${reservaMessage}`
 
 export function renderNav({ ubicacionHref = '/#ubicacion', menuHref = '/menu.html', platosHref = '/platos.html', eventosHref = '/eventos.html', localHref = '/local.html' } = {}) {
   return `
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="/" class="navbar-logo-link" aria-label="Ir al inicio">
-        <img src="/malandrino-favicon-blanco.svg" alt="Malandrino" class="navbar-logo" />
+        <img src="/malandrino-hrizontal-blanco.svg" alt="Malandrino" class="navbar-logo" />
       </a>
 
       <a href="${reservaHref}" target="_blank" rel="noopener" class="nav-link">Reserva</a>

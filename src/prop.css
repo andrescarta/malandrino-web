@@ -345,3 +345,15 @@
 @media (prefers-reduced-motion: reduce) {
   .vid img { transition: none; }
 }
+
+/* Galeria con visor */
+.prop-ph-btn { display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in; }
+.prop-ph-btn img { transition: transform 0.35s; }
+.prop-ph-btn:hover img,
+.prop-ph-btn:focus-visible img { transform: scale(1.04); }
+.prop-gallery.grande .prop-ph:nth-child(5n + 1) { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+@media (max-width: 860px) { .prop-gallery.grande .prop-ph:nth-child(5n + 1) { grid-row: auto; aspect-ratio: 16 / 9; } }
+.foto-dlg { width: min(1100px, calc(100vw - 32px)); }
+.foto-dlg .prop-dlg-body { display: flex; justify-content: center; background: #000; }
+.foto-dlg img { display: block; max-width: 100%; max-height: calc(100vh - 130px); object-fit: contain; }
+.prop-gallery.grande { grid-auto-flow: dense; }

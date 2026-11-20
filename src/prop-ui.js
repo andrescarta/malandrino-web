@@ -146,3 +146,49 @@ export function initVideos() {
   d.addEventListener('close', () => { v.pause(); v.removeAttribute('src'); v.load() })
   cerrable(d)
 }
+
+// --- Galeria con visor (pop-up de fotos con flechas, teclado y swipe) ---
+
+export function galeriaHTML(fotos, clase = "") {
+  return `<div class="prop-gallery ${clase}">${fotos
+    .map(({ src, alt }, n) => `<button type="button" class="prop-ph prop-ph-btn" data-n="${n}" data-src="${src}" aria-label="Ver foto: ${alt}"><img src="${src}" alt="${alt}" loading="lazy"></button>`)
+    .join('')}</div>`
+}
+
+export const fotoDialogHTML = `
+  <dialog id="foto-dlg" class="prop-dlg foto-dlg">
+    <div class="prop-dlg-head">
+      <span class="vcount" id="foto-cnt"></span>
+      <button class="prop-dlg-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="prop-dlg-body"><img id="foto-el" src="" alt=""><button class="vnav prev" type="button" aria-label="Foto anterior">‹</button><button class="vnav next" type="button" aria-label="Foto siguiente">›</button></div>
+  </dialog>`
+
+export function initGaleria() {
+  const d = document.getElementById('foto-dlg'); if (!d) return
+  const img = document.getElementById('foto-el')
+  const cnt = document.getElementById('foto-cnt')
+  const lista = [...document.querySelectorAll('.prop-ph-btn')]
+  let i = 0
+  const ir = (n) => {
+    i = (n + lista.length) % lista.length
+    img.src = lista[i].dataset.src
+    img.alt = lista[i].querySelector('img').alt
+    cnt.textContent = `${i + 1} / ${lista.length}`
+  }
+  lista.forEach((b, n) => b.addEventListener('click', () => { ir(n); d.showModal() }))
+  d.querySelector('.vnav.prev').addEventListener('click', () => ir(i - 1))
+  d.querySelector('.vnav.next').addEventListener('click', () => ir(i + 1))
+  d.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') ir(i - 1)
+    else if (e.key === 'ArrowRight') ir(i + 1)
+  })
+  let x0 = null
+  img.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX }, { passive: true })
+  img.addEventListener('touchend', (e) => {
+    if (x0 === null) return
+    const dx = e.changedTouches[0].clientX - x0; x0 = null
+    if (Math.abs(dx) > 60) ir(i + (dx < 0 ? 1 : -1))
+  }, { passive: true })
+  cerrable(d)
+}
